@@ -1,0 +1,29 @@
+.intro {
+    height: 94vh;
+    background: url('../images/site/intro.jpg') no-repeat center center;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.intro .intro-black {
+    height: 94vh;
+    width: 100%;
+    background-color: rgba(0, 0, 0, .4);
+    background-attachment: fixed;
+    text-align: center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+}
+
+.intro h1 {
+    color: #fff;
+    font-size: 60px;
+}
+
+.intro p {
+    color: #fff;
+    font-size: 25px;
+}
