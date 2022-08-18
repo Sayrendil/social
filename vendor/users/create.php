@@ -25,7 +25,7 @@
     $password = htmlspecialchars(rtrim($_POST['password']));
     $created_at = date("Y-m-d H:i:s");
     $token = uniqid();
-    $status = 0;
+    $status = 1;
 
     if(mb_strlen($first_name) < 3 && mb_strlen($first_name) > 255) {
         header("Location: /register.php?error=first_name");
@@ -57,10 +57,10 @@
     // die(var_dump($connect));
 
     if (move_uploaded_file($tempname, $folder)) {
-        echo "Image uploaded successfully";
+        header("Location: /verify.php?success=200");
         // die(var_dump($connect));
     }else{
-        echo "Failed to upload image";
+        header("Location: /register.php?error=408");
     }
 
     // $to  = "<daniyarsigaev@gmail.com>, <daniyarsigaev@mail.ru>" ; 
@@ -77,5 +77,3 @@
     // mail($to, $subject, $message, $headers);
 
     // die(var_dump(mail($to, $subject, $headers)));
-
-    header("Location: /verify.php?success=200");

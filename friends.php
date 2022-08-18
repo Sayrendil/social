@@ -32,6 +32,8 @@
     $friends = mysqli_query($connect, $sql_friends);
     // $friends = mysqli_fetch_assoc($friends);
 
+    $users = mysqli_query($connect, "SELECT * FROM users");
+
 ?>
 
 <div class="container my-5">
@@ -69,19 +71,19 @@
         }
     ?>
 
-<h1 class="text-center my-3">Мои Друзья</h1>
+    <h1 class="text-center my-3">Найди возможного друга</h1>
     <div class="row">
         <?php
-            foreach($friends as $friend) {
-                if($user_id != $friend['user_ids'] && $friend['status_friend'] == 2) {
+            foreach($users as $user) {
+                if($user['id'] != $user_id) {
         ?>
         <div class="col-4">
             <div class="card">
-                <img src="/views/images/<?= $friend['image_user'] ?>" class="card-img-top">
+                <img src="/views/images/<?= $user['image'] ?>" class="card-img-top">
                 <div class="card-body">
-                    <h5 class="card-title"><?= $friend['first_name'] ?> <?= $friend['second_name'] ?></h5>
-                    <p class="card-text"><?= $friend['phone'] ?></p>
-                    <a href="/views/messages/message.php?chat_id=<?= $friend['user_ids'] ?>" class="btn btn-primary">Написать</a>
+                    <h5 class="card-title"><?= $user['first_name'] ?> <?= $user['second_name'] ?></h5>
+                    <p class="card-text"><?= $user['phone'] ?></p>
+                    <a href="/views/users/profile.php?id=<?= $user['id'] ?>" class="btn btn-primary">Посмотреть профиль</a>
                 </div>
             </div>
         </div>

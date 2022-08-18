@@ -6,11 +6,9 @@
 ?>
 
     <div class="container my-5">
-        <h1 class="h1 text-center">Активация Аккаунта</h1>
-        <p class="text-center">
-            Вам на почту был выслан код для подтверждения аккаунта (Проверьте вкладку спама!)
-        </p>
-        <div class="row">
+        <div class="alert alert-success">Вы успешно зарегистрировались</div>
+        <a href="/login.php">Войти</a>
+        <!-- <div class="row">
             <div class="col-8 offset-2">
                 <form action="/vendor/users/email_verify.php" method="POST">
                     <div class="form-group">
@@ -20,7 +18,7 @@
                     <button class="btn btn-info" type="submit">Отправить</button>
                 </form>
             </div>
-        </div>
+        </div> -->
     </div>
 
 <?php

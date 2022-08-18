@@ -78,7 +78,7 @@
                                     Аккаунт
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="/views/users/profile.php">Мой Профиль</a>
+                                    <a class="dropdown-item" href="/views/users/my_profile.php">Мой Профиль</a>
                                     <a class="dropdown-item" href="/views/users/settings.php">Редактировать профиль</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="/vendor/users/exit.php">Выход</a>

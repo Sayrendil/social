@@ -5,7 +5,7 @@
 
     $user_id = $_SESSION['user']['id'];
 
-    $sql_friends = "SELECT `friendship_requests`.`id` as `id`, 
+    $sql_friends = "SELECT friendship_requests.id as id, 
     friendship_requests.from_user_id as from_user_id, 
     friendship_requests.to_user_id as to_user_id, 
     friendship_requests.status as status_friend, 
@@ -16,11 +16,12 @@
     users.phone as phone,
     users.email as email,
     users.image as image_user,
-    users.description as description
+    users.description as descriptione,
+    us2.id as user_ids
     FROM friendship_requests
-    LEFT JOIN users ON friendship_requests.to_user_id = users.id
-    OR friendship_requests.from_user_id = users.id
-    WHERE friendship_requests.from_user_id = '$user_id' OR friendship_requests.to_user_id = '$user_id' AND friendship_requests.status = '2'";
+    JOIN users us2 ON friendship_requests.to_user_id = us2.id
+    JOIN users ON friendship_requests.from_user_id = users.id
+    WHERE friendship_requests.to_user_id = '$user_id' OR friendship_requests.from_user_id = '$user_id' AND friendship_requests.status = '2'";
     $friends = mysqli_query($connect, $sql_friends);
     // $friends = mysqli_fetch_assoc($friends);
 
@@ -47,7 +48,6 @@
     <div class="row">
         <?php
             foreach($friends as $friend) {
-                if($user_id != $friend['user_ids'] && $friend['status_friend'] == 2) {
         ?>
         <div class="col-4">
             <div class="card">
@@ -60,7 +60,6 @@
             </div>
         </div>
         <?php
-                }
             }
         ?>
     </div>
