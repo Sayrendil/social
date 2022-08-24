@@ -5,25 +5,39 @@
 
     $user_id = $_SESSION['user']['id'];
 
-    $sql_friends = "SELECT friendship_requests.id as id, 
-    friendship_requests.from_user_id as from_user_id, 
-    friendship_requests.to_user_id as to_user_id, 
-    friendship_requests.status as status_friend, 
-    friendship_requests.created_at as created_at,
-    users.id as user_ids,
-    users.first_name as first_name,
-    users.second_name as second_name,
-    users.phone as phone,
-    users.email as email,
-    users.image as image_user,
-    users.description as descriptione,
-    us2.id as user_ids
-    FROM friendship_requests
-    JOIN users us2 ON friendship_requests.to_user_id = us2.id
-    JOIN users ON friendship_requests.from_user_id = users.id
-    WHERE friendship_requests.to_user_id = '$user_id' OR friendship_requests.from_user_id = '$user_id' AND friendship_requests.status = '2'";
-    $friends = mysqli_query($connect, $sql_friends);
-    // $friends = mysqli_fetch_assoc($friends);
+    $friend_sql1 = "SELECT * FROM friendship_requests 
+    WHERE friendship_requests.from_user_id = '$user_id'";
+    $friends_one = mysqli_query($connect, $friend_sql1);
+    $friends_one = mysqli_fetch_all($friends_one);
+
+    $friend_sql2 = "SELECT * FROM friendship_requests 
+    WHERE friendship_requests.to_user_id = '$user_id'";
+    $friends_two = mysqli_query($connect, $friend_sql2);
+    $friends_two = mysqli_fetch_all($friends_two);
+
+    $friends = array_merge_recursive($friends_one, $friends_two);
+
+    $arr = array();
+
+    foreach ($friends as $keys => $names) { 
+        // die(var_dump($names));
+        $names = array_slice($names, 1, 2);
+        foreach ($names as $key => $name) {
+            $arr[$key][] = $name;
+            continue;
+        }
+
+    }
+
+    unset($arr[$user_id]);
+
+    foreach ($arr as $id => $val){
+        $mas1[] = implode(", ", $val);
+        $mas = implode(", ", $mas1);
+    }
+
+    $sql_users = "SELECT * FROM users WHERE users.id IN($mas) AND NOT users.id IN($user_id)";
+    $friends = mysqli_query($connect, $sql_users);
 
 ?>
 
@@ -48,18 +62,20 @@
     <div class="row">
         <?php
             foreach($friends as $friend) {
+                // if($friend['to_user_id'] != $user_id || $friend['from_user_id'] == $user_id) {
         ?>
         <div class="col-4">
             <div class="card">
-                <img src="/views/images/<?= $friend['image_user'] ?>" class="card-img-top">
+                <img src="/views/images/<?= $friend['image'] ?>" class="card-img-top">
                 <div class="card-body">
                     <h5 class="card-title"><?= $friend['first_name'] ?> <?= $friend['second_name'] ?></h5>
                     <p class="card-text"><?= $friend['phone'] ?></p>
-                    <a href="/views/messages/message.php?chat_id=<?= $friend['user_ids'] ?>" class="btn btn-primary">Написать</a>
+                    <a href="/views/messages/message.php?chat_id=<?= $friend['id'] ?>" class="btn btn-primary">Написать</a>
                 </div>
             </div>
         </div>
         <?php
+                // }
             }
         ?>
     </div>

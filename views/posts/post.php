@@ -16,23 +16,17 @@
 
 <div class="container my-5">
     <div class="row my-5">
-        <h1 class="h1 text-center">Новость</h1>
+        <div class="col-8">
+            <h1 class="h1 text-center"><?= $post['title'] ?></h1>
+            <p>
+                <?= $post['content'] ?>
+            </p>
+        </div>
+        <div class="col-4">
+            <img src="/views/images/<?= $post['image'] ?>" class="img-fluid">
+        </div>
+        <a href="/news.php" class="btn btn-warning">Вернуться к новостям</a>
     </div>
-    <form action="/vendor/posts/update.php" method="POST" enctype="multipart/form-data" name="create_post">
-        <div class="form-group">
-            <label for="title">Заголовок</label>
-            <input type="text" name="title" class="form-control" value="<?= $post['title'] ?>">
-        </div>
-        <div class="form-group">
-            <label for="content">Описание</label>
-            <textarea name="content" id="content" cols="20" rows="10" class="form-control"><?= $post['content'] ?></textarea>
-        </div>
-        <div class="form-group">
-            <img src="views/images/<?= $post['image'] ?>" alt="">
-            <input type="file" name="image" class="form-control">
-        </div>
-        <button class="btn btn-info" type="submit" name="create_post">Опубликовать</button>
-    </form>
 </div>
 
 <?php

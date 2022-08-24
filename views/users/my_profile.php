@@ -25,12 +25,16 @@
     WHERE friendship_requests.from_user_id = '$user_id' OR friendship_requests.to_user_id = '$user_id' AND friendship_requests.status = '2'";
     $friends = mysqli_query($connect, $sql_friends);
 
+    $sql_posts = "SELECT * FROM posts WHERE posts.user_id = '$user_id'";
+    $posts = mysqli_query($connect, $sql_posts);
+    $posts = mysqli_fetch_all($posts);
+
 ?>
 
 <div class="container my-5">
     <div class="row">
         <div class="col-6 offset-1">
-        <h3 class="h3 text-center">Мой Профиль</h3>
+            <h3 class="h3 text-center">Мой Профиль</h3>
             <div class="card my-5" style="width: 100%;">
                 <img src="/views/images/<?= $user['image'] ?>" class="card-img-top" alt="image_user">
                 <div class="card-body">
@@ -46,6 +50,28 @@
                     <a href="/views/users/settings.php" class="btn btn-warning mt-3">Редактировать</a>
                 </div>
             </div>
+            <h3 class="h3 text-center">Мои Новости</h3>
+            <?php
+                if($posts) {
+                    foreach($posts as $post) {
+            ?>
+            <div class="card my-5" style="width: 100%;">
+                <img src="/views/images/<?= $post[3] ?>" class="card-img-top" alt="image_user">
+                <div class="card-body">
+                    <h5 class="card-title"><?= $post[1] ?></h5>
+                    <a href="/views/posts/post.php?id=<?= $post[0] ?>" class="btn btn-info">Посмотреть</a>
+                    <a href="/views/posts/edit.php?id=<?= $post[0] ?>" class="btn btn-warning">Редактировать</a>
+                    <a href="/vendor/posts/destroy.php?id=<?= $post[0] ?>" class="btn btn-warning">Удалить</a>
+                </div>
+            </div>
+            <?php
+                    }
+                } else {
+            ?>
+                <div class="alert alert-warning">У вас нет ни одной записи</div>
+            <?php
+                }
+            ?>
         </div>
         <div class="col-4">
             <h3 class="h3 text-center">Друзья</h3>

@@ -13,26 +13,39 @@
         $friend_users = mysqli_fetch_assoc($friend_users);
     }
 
-    $sql_friends = "SELECT `friendship_requests`.`id` as `id`, 
-    friendship_requests.from_user_id as from_user_id, 
-    friendship_requests.to_user_id as to_user_id, 
-    friendship_requests.status as status_friend, 
-    friendship_requests.created_at as created_at,
-    users.id as user_ids,
-    users.first_name as first_name,
-    users.second_name as second_name,
-    users.phone as phone,
-    users.email as email,
-    users.image as image_user,
-    users.description as description
-    FROM friendship_requests
-    LEFT JOIN users ON friendship_requests.to_user_id = users.id
-    OR friendship_requests.from_user_id = users.id
-    WHERE friendship_requests.from_user_id = '$user_id' OR friendship_requests.to_user_id = '$user_id' AND friendship_requests.status = '2'";
-    $friends = mysqli_query($connect, $sql_friends);
-    // $friends = mysqli_fetch_assoc($friends);
+    $friend_sql1 = "SELECT * FROM friendship_requests 
+    WHERE friendship_requests.from_user_id = '$user_id'";
+    $friends_one = mysqli_query($connect, $friend_sql1);
+    $friends_one = mysqli_fetch_all($friends_one);
 
-    $users = mysqli_query($connect, "SELECT * FROM users");
+    $friend_sql2 = "SELECT * FROM friendship_requests 
+    WHERE friendship_requests.to_user_id = '$user_id'";
+    $friends_two = mysqli_query($connect, $friend_sql2);
+    $friends_two = mysqli_fetch_all($friends_two);
+
+    $friends = array_merge_recursive($friends_one, $friends_two);
+
+    $arr = array();
+
+    foreach ($friends as $keys => $names) { 
+        // die(var_dump($names));
+        $names = array_slice($names, 1, 2);
+        foreach ($names as $key => $name) {
+            $arr[$key][] = $name;
+            continue;
+        }
+
+    }
+
+    unset($arr[$user_id]);
+
+    foreach ($arr as $id => $val){
+        $mas1[] = implode(", ", $val);
+        $mas = implode(", ", $mas1);
+    }
+
+    $sql_users = "SELECT * FROM users WHERE NOT users.id IN($mas)";
+    $users = mysqli_query($connect, $sql_users);
 
 ?>
 
@@ -75,7 +88,7 @@
     <div class="row">
         <?php
             foreach($users as $user) {
-                if($user['id'] != $user_id) {
+                    if($user['id'] != $user_id) {
         ?>
         <div class="col-4">
             <div class="card">

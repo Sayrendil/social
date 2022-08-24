@@ -71,6 +71,9 @@
                             <li class="nav-item active">
                                 <a class="nav-link" href="/friends.php">Друзья</a>
                             </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" href="/programm.php">Программа курса</a>
+                            </li>
                         </ul>
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item dropdown active">
